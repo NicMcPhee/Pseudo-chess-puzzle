@@ -1,5 +1,8 @@
 (ns pseudo_chess_puzzle.location_genome)
 
+(defn position-string-representation [piece]
+  (reduce #(str %1 (get (name %2) 0)) "" (vals piece)))
+
 (def placed-pieces
   [ { :color :black :piece :B }
     { :color :white :piece :K }
