@@ -1,4 +1,4 @@
-(ns semi-chess-puzzle.core
+(ns pseudo-chess-puzzle.core
   (:require [quil.core :as q]
             [quil.middleware :as m]))
 
@@ -32,7 +32,7 @@
       ; Draw the circle.
       (q/ellipse x y 100 100))))
 
-(q/defsketch semi-chess-puzzle
+(q/defsketch pseudo-chess-puzzle
   :title "You spin my circle right round"
   :size [500 500]
   ; setup function called only once, during sketch initialization.
