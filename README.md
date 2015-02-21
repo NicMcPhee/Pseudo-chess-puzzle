@@ -7,10 +7,10 @@ Starting configuration:
 
 0 | 1 | 2 | 3
 --- | --- | --- | ---
- |  | BB | 
- |  |  | 
- |  | WK | 
- | BN |  | 
+ |  | ♝ | 
+&nbsp; |  |  | 
+ |  | ♔ | 
+ | ♞ |  | 
  
 * 2 each (1 black, 1 white) of K, Q, R, B, N, and P, so 12 pieces total.
 * K's do not share a row, column, or diagonal with each other
