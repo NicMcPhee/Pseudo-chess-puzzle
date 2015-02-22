@@ -12,9 +12,19 @@
   ; board setup.
   (lg/initial-genome))
 
+(defn count-hits [error-vector]
+  (count (filter identity (vals error-vector))))
+
 (defn update-state [state]
-  ; Update sketch state; this does nothing for now.
-  (lg/swap-n-location-contents state (rand-int 3)))
+  ; Update sketch state by doing a mutation on the old state.
+  (let [new-state (lg/swap-n-location-contents state (rand-int 3))
+        old-error-vector (lg/error-vector state)
+        old-hits (count-hits old-error-vector)
+        new-error-vector (lg/error-vector new-state)
+        new-hits (count-hits new-error-vector)]
+    (if (>= new-hits old-hits)
+      new-state
+      state)))
 
 ; Unfortunately I can't (immediately) use this because
 ; the default font used by Quil doesn't support these
