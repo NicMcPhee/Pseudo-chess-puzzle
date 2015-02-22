@@ -17,7 +17,7 @@
 
 (defn update-state [state]
   ; Update sketch state by doing a mutation on the old state.
-  (let [new-state (lg/swap-n-location-contents state (rand-int 3))
+  (let [new-state (lg/swap-n-location-contents state (inc (rand-int 3)))
         old-error-vector (lg/error-vector state)
         old-hits (count-hits old-error-vector)
         new-error-vector (lg/error-vector new-state)

@@ -138,7 +138,9 @@
 
 (fact "`error-vector` correctly computes the error vector"
       (let [test-board (make-board "bK sp bB wP sp sp wN wQ bP bR wK wR wB bN bQ sp")]
-        (lg/error-vector test-board) => { :1-orig-placement true,
+        (lg/error-vector test-board) => { :1.1-bB-orig-placement true,
+                                          :1.2-wK-orig-placement true,
+                                          :1.3-bN-orig-placement true,
                                           :2-Ks-not-share false,
                                           :3-Bs-not-share true,
                                           :4-Ns-not-adjacent true,
@@ -155,7 +157,9 @@
                                           :7.5-wP-adjacent-wQ true,
                                           :7.6-wP-share-diag-wR false})
       (let [test-board (make-board "wP bP bB sp sp bK sp wB wR bQ wK sp bR bN wQ wN")]
-        (lg/error-vector test-board) => { :1-orig-placement true,
+        (lg/error-vector test-board) => { :1.1-bB-orig-placement true,
+                                          :1.2-wK-orig-placement true,
+                                          :1.3-bN-orig-placement true,
                                           :2-Ks-not-share false,
                                           :3-Bs-not-share false,
                                           :4-Ns-not-adjacent true,
@@ -172,7 +176,9 @@
                                           :7.5-wP-adjacent-wQ false,
                                           :7.6-wP-share-diag-wR false})
       (let [test-board (make-board "bR sp sp wR bK sp sp wN bQ wB wK wP wQ bN bP bB")]
-        (lg/error-vector test-board) => { :1-orig-placement false,
+        (lg/error-vector test-board) => { :1.1-bB-orig-placement false,
+                                          :1.2-wK-orig-placement true,
+                                          :1.3-bN-orig-placement true,
                                           :2-Ks-not-share true,
                                           :3-Bs-not-share true,
                                           :4-Ns-not-adjacent true,

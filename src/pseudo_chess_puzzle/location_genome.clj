@@ -69,24 +69,41 @@
        (= (nth board 10) { :color :white :piece :K })
        (= (nth board 13) { :color :black :piece :N })))
 
+(defn piece-in-position [board index piece-string]
+  (= (nth board index) (parse-piece-string piece-string)))
+
+(defn not-share-rcd? [board s t]
+  (not (share-row-col-diag? board
+                            (parse-piece-string s)
+                            (parse-piece-string t))))
+
+(defn one-adjacent? [board piece-string]
+  (= 1 (count (adjacent-pieces board (parse-piece-string piece-string)))))
+
+(defn all-adjacent-have-color? [board piece-string color]
+  (every? #(= color (:color %)) (adjacent-pieces board (parse-piece-string piece-string))))
+
+(defn adjacent-pieces? [board s t]
+  (adjacent? board (parse-piece-string s) (parse-piece-string t)))
+
 (defn error-vector [board]
-  { :1.1-bB-orig-placement (= (nth board  2) (parse-piece-string "bB")),
-    :1.2-wK-orig-placement (= (nth board 10) (parse-piece-string "wK")),
-    :1.3-bN-orig-placement (= (nth board 13) (parse-piece-string "bN")),
-    :2-Ks-not-share (not (share-row-col-diag? board (parse-piece-string "bK") (parse-piece-string "wK"))),
-    :3-Bs-not-share (not (share-row-col-diag? board (parse-piece-string "bB") (parse-piece-string "wB"))),
+  { :1.1-bB-orig-placement (piece-in-position board 2 "bB"),
+    :1.2-wK-orig-placement (piece-in-position board 10 "wK"),
+    :1.3-bN-orig-placement (piece-in-position board 13 "bN"),
+    :2-Ks-not-share (not-share-rcd? board "bK" "wK"),
+    :3-Bs-not-share (not-share-rcd? board "bB" "wB"),
     :4-Ns-not-adjacent (not (adjacent? board (parse-piece-string "bN") (parse-piece-string "wN"))),
     :5-Qs-share-diag (share-diag? board (parse-piece-string "bQ") (parse-piece-string "wQ")),
     :6.1-Rs-two-spaces (two-apart? board (parse-piece-string "bR") (parse-piece-string "wR")),
-    :6.2-bR-adjacent-one (= 1 (count (adjacent-pieces board (parse-piece-string "bR")))),
-    :6.3-wR-adjacent-one (= 1 (count (adjacent-pieces board (parse-piece-string "wR")))),
-    :6.4-bR-adjacent-black (every? #(= :black (:color %)) (adjacent-pieces board (parse-piece-string "bR"))),
-    :6.5-wR-adjacent-white (every? #(= :white (:color %)) (adjacent-pieces board (parse-piece-string "wR"))),
-    :7.1-Ps-adjacent (adjacent? board (parse-piece-string "bP") (parse-piece-string "wP")),
-    :7.2-bP-adjacent-bK (adjacent? board (parse-piece-string "bP") (parse-piece-string "bK")),
-    :7.3-bP-adjacent-bQ (adjacent? board (parse-piece-string "bP") (parse-piece-string "bQ")),
-    :7.4-wP-adjacent-wK (adjacent? board (parse-piece-string "wP") (parse-piece-string "wK")),
-    :7.5-wP-adjacent-wQ (adjacent? board (parse-piece-string "wP") (parse-piece-string "wQ")),
+    :6.2-bR-adjacent-one (one-adjacent? board "bR"),
+    :6.3-wR-adjacent-one (one-adjacent? board "wR"),
+    :6.4-bR-adjacent-black (all-adjacent-have-color? board "bR" :black),
+    :6.5-wR-adjacent-white (all-adjacent-have-color? board "wR" :white),
+    :7.1-Ps-adjacent (adjacent-pieces? board "bP" "wP"),
+    :7.2-bP-adjacent-bK (adjacent-pieces? board "bP" "bK"),
+    :7.3-bP-adjacent-bQ (adjacent-pieces? board "bP" "bQ"),
+    :7.4-wP-adjacent-wK (adjacent-pieces? board "wP" "wK"),
+    :7.5-wP-adjacent-wQ (adjacent-pieces? board "wP" "wQ"),
     :7.6-wP-share-diag-wR (share-diag? board (parse-piece-string "wP") (parse-piece-string "wR"))
     })
 
