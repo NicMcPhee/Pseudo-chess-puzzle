@@ -112,3 +112,19 @@
                 10 { :color :white :piece :K }
                 13 { :color :black :piece :N })]
     (reduce place-piece-randomly start unplaced-pieces)))
+
+(defn swap-single-location-contents [board]
+  (let [p-pos (rand-int 16)
+        q-pos (rand-int 16)
+        p (get board p-pos)
+        q (get board q-pos)]
+    (assoc board p-pos q q-pos p)))
+
+(defn swap-n-location-contents [board num-swaps]
+  (loop [b (vec board)
+         n num-swaps]
+    (if (zero? num-swaps)
+      (list* b)
+      (recur (swap-single-location-contents b)
+             (dec n)))))
+

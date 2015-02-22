@@ -14,7 +14,7 @@
 
 (defn update-state [state]
   ; Update sketch state; this does nothing for now.
-  state)
+  (lg/swap-n-location-contents state (rand-int 3)))
 
 ; Unfortunately I can't (immediately) use this because
 ; the default font used by Quil doesn't support these
