@@ -3,19 +3,28 @@
 (defn position-string-representation [piece]
   (reduce #(str %1 (get (name %2) 0)) "" (vals piece)))
 
+(defn index-of [coll x]
+  (loop [coll coll
+         result 0]
+    (if (empty? coll)
+      -1
+      (if (= (first coll) x)
+        result
+        (recur (rest coll) (inc result))))))
+
 (defn share-row? [board x y]
-  (let [x-pos (.indexOf board x)
-        y-pos (.indexOf board y)]
+  (let [x-pos (index-of board x)
+        y-pos (index-of board y)]
     (= (quot x-pos 4) (quot y-pos 4))))
 
 (defn share-col? [board x y]
-  (let [x-pos (.indexOf board x)
-        y-pos (.indexOf board y)]
+  (let [x-pos (index-of board x)
+        y-pos (index-of board y)]
     (= (rem x-pos 4) (rem y-pos 4))))
 
 (defn share-diag? [board x y]
-  (let [x-pos (.indexOf board x)
-        y-pos (.indexOf board y)
+  (let [x-pos (index-of board x)
+        y-pos (index-of board y)
         diff (- x-pos y-pos)]
     (or (and (zero? (rem diff 5))
              (= (> x-pos y-pos)
@@ -30,13 +39,13 @@
       (share-diag? board x y)))
 
 (defn adjacent? [board x y]
-  (let [x-pos (.indexOf board x)
-        y-pos (.indexOf board y)]
+  (let [x-pos (index-of board x)
+        y-pos (index-of board y)]
     (and (>= 1 (Math/abs (- (rem x-pos 4) (rem y-pos 4))))
          (>= 1 (Math/abs (- (quot x-pos 4) (quot y-pos 4)))))))
 
 (defn adjacent-pieces [board p]
-  (let [pos (.indexOf board p)
+  (let [pos (index-of board p)
         row (quot pos 4)
         col (rem pos 4)]
     (for [r (range (max 0 (dec row)) (inc (min 3 (inc row))))
@@ -47,10 +56,10 @@
       piece)))
 
 (defn two-apart? [board x y]
-  (let [x-pos (.indexOf board x)
+  (let [x-pos (index-of board x)
         x-row (quot x-pos 4)
         x-col (rem x-pos 4)
-        y-pos (.indexOf board y)
+        y-pos (index-of board y)
         y-row (quot y-pos 4)
         y-col (rem y-pos 4)]
     (or (and (= x-row y-row)
