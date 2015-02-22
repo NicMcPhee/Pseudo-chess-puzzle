@@ -8,5 +8,4 @@
   :profiles {:dev {:dependencies [[midje "1.6.3"]]}
              :uberjar {:aot :all}}
   :main pseudo-chess-puzzle.core
-  :eval-in-leiningen true
   :target-path "target/%s")
