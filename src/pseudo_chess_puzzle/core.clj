@@ -50,7 +50,11 @@
             :let [piece (nth (nth rows row-num) col-num)
                   x-coord (+ 75 (* col-num block-size))
                   y-coord (- 500 (+ 75 (* (- 3 row-num) block-size)))]]
-      (q/text piece x-coord y-coord))))
+      (q/text piece x-coord y-coord)))
+  (q/text-size 24)
+  (let [error-vector (lg/error-vector state)
+        bits (apply str (map #(if (get error-vector %) 1 0) (sort (keys error-vector))))]
+    (q/text bits 50 50)))
 
 (q/defsketch pseudo-chess-puzzle
   :title "Pseudo-chess puzzle"
