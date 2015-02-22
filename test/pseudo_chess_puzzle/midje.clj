@@ -71,6 +71,7 @@
         (lg/share-diag? test-board  0  1) => false
         (lg/share-diag? test-board 13  9) => false
         (lg/share-diag? test-board  1  8) => false
+        (lg/share-diag? test-board  2 12) => false
 
         (lg/share-diag? test-board 10  0) => true
         (lg/share-diag? test-board 13  8) => true
@@ -126,3 +127,65 @@
         (lg/two-apart? test-board  3 15) => true
         (lg/two-apart? test-board 15 12) => true
         ))
+
+(defn make-board [board-string]
+  (let [piece-strings (clojure.string/split board-string #" ")]
+    (map lg/parse-piece-string piece-strings)))
+
+(fact "`initial-pieces-correct?` returns true exactly when the 3 initially placed pieces are correct"
+      (let [test-board (make-board "bK sp bB wP sp sp wN wQ bP bR wK wR wB bN bQ sp")]
+        (lg/initial-pieces-correct? test-board) => true))
+
+(fact "`error-vector` correctly computes the error vector"
+      (let [test-board (make-board "bK sp bB wP sp sp wN wQ bP bR wK wR wB bN bQ sp")]
+        (lg/error-vector test-board) => { :1-orig-placement true,
+                                          :2-Ks-not-share false,
+                                          :3-Bs-not-share true,
+                                          :4-Ns-not-adjacent true,
+                                          :5-Qs-share-diag false,
+                                          :6.1-Rs-two-spaces false,
+                                          :6.2-bR-adjacent-one false,
+                                          :6.3-wR-adjacent-one false,
+                                          :6.4-bR-adjacent-black false,
+                                          :6.5-wR-adjacent-white false,
+                                          :7.1-Ps-adjacent false,
+                                          :7.2-bP-adjacent-bK false,
+                                          :7.3-bP-adjacent-bQ false,
+                                          :7.4-wP-adjacent-wK false,
+                                          :7.5-wP-adjacent-wQ true,
+                                          :7.6-wP-share-diag-wR false})
+      (let [test-board (make-board "wP bP bB sp sp bK sp wB wR bQ wK sp bR bN wQ wN")]
+        (lg/error-vector test-board) => { :1-orig-placement true,
+                                          :2-Ks-not-share false,
+                                          :3-Bs-not-share false,
+                                          :4-Ns-not-adjacent true,
+                                          :5-Qs-share-diag true,
+                                          :6.1-Rs-two-spaces false,
+                                          :6.2-bR-adjacent-one false,
+                                          :6.3-wR-adjacent-one false,
+                                          :6.4-bR-adjacent-black false,
+                                          :6.5-wR-adjacent-white false,
+                                          :7.1-Ps-adjacent true,
+                                          :7.2-bP-adjacent-bK true,
+                                          :7.3-bP-adjacent-bQ false,
+                                          :7.4-wP-adjacent-wK false,
+                                          :7.5-wP-adjacent-wQ false,
+                                          :7.6-wP-share-diag-wR false})
+      (let [test-board (make-board "bR sp sp wR bK sp sp wN bQ wB wK wP wQ bN bP bB")]
+        (lg/error-vector test-board) => { :1-orig-placement false,
+                                          :2-Ks-not-share true,
+                                          :3-Bs-not-share true,
+                                          :4-Ns-not-adjacent true,
+                                          :5-Qs-share-diag false,
+                                          :6.1-Rs-two-spaces true,
+                                          :6.2-bR-adjacent-one true,
+                                          :6.3-wR-adjacent-one true,
+                                          :6.4-bR-adjacent-black true,
+                                          :6.5-wR-adjacent-white true,
+                                          :7.1-Ps-adjacent true,
+                                          :7.2-bP-adjacent-bK false,
+                                          :7.3-bP-adjacent-bQ false,
+                                          :7.4-wP-adjacent-wK true,
+                                          :7.5-wP-adjacent-wQ false,
+                                          :7.6-wP-share-diag-wR false})
+      )
