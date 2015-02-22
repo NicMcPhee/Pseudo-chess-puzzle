@@ -70,7 +70,9 @@
        (= (nth board 13) { :color :black :piece :N })))
 
 (defn error-vector [board]
-  { :1-orig-placement (initial-pieces-correct? board),
+  { :1.1-bB-orig-placement (= (nth board  2) (parse-piece-string "bB")),
+    :1.2-wK-orig-placement (= (nth board 10) (parse-piece-string "wK")),
+    :1.3-bN-orig-placement (= (nth board 13) (parse-piece-string "bN")),
     :2-Ks-not-share (not (share-row-col-diag? board (parse-piece-string "bK") (parse-piece-string "wK"))),
     :3-Bs-not-share (not (share-row-col-diag? board (parse-piece-string "bB") (parse-piece-string "wB"))),
     :4-Ns-not-adjacent (not (adjacent? board (parse-piece-string "bN") (parse-piece-string "wN"))),
