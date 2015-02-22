@@ -10,7 +10,7 @@
   (q/color-mode :hsb)
   ; setup function returns initial state, i.e., the initial
   ; board setup.
-  (lg/initial-genome))
+  @lg/best-board)
 
 (defn update-state [state]
   ; Update sketch state by getting the current best state from
