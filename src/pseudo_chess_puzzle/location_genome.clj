@@ -150,12 +150,35 @@
       (recur (swap-single-location-contents board)
              (dec num-swaps)))))
 
+; I started with (gen-uniform-var 3) but switched to
+; Poisson to increase the odds of some bigger jumps
+; since it seems to get stuck in various places if
+; the start's "wrong".
+(defn gen-uniform-var [limit]
+  (rand-int limit))
+
+(def poisson-lambda 2)
+(defn gen-poisson-var [lambda]
+  (let [u (rand)]
+    (loop [x 0
+           p (Math/exp (- lambda))
+           s p]
+      (if (<= u s)
+        x
+        (let [x (inc x)
+              p (* p (/ lambda x))
+              s (+ s p)]
+          (recur x p s))))))
+
+(defn gen-num-swaps []
+  (inc (gen-poisson-var poisson-lambda)))
+
 (def best-board (atom (initial-genome)))
 (def num-iterations (atom 0))
 
 (defn hill-climb [board]
   (swap! num-iterations inc)
-  (let [new-board (swap-n-location-contents board (inc (rand-int 3)))
+  (let [new-board (swap-n-location-contents board (gen-num-swaps))
         old-error-vector (error-vector board)
         old-hits (count-hits old-error-vector)
         new-error-vector (error-vector new-board)
