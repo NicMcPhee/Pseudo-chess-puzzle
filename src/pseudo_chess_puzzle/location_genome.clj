@@ -70,7 +70,9 @@
        (= (nth board 13) { :color :black :piece :N })))
 
 (defn error-vector [board]
-  { :1-orig-placement (initial-pieces-correct? board),
+  { :1.1-bB-orig-placement (= (nth board  2) (parse-piece-string "bB")),
+    :1.2-wK-orig-placement (= (nth board 10) (parse-piece-string "wK")),
+    :1.3-bN-orig-placement (= (nth board 13) (parse-piece-string "bN")),
     :2-Ks-not-share (not (share-row-col-diag? board (parse-piece-string "bK") (parse-piece-string "wK"))),
     :3-Bs-not-share (not (share-row-col-diag? board (parse-piece-string "bB") (parse-piece-string "wB"))),
     :4-Ns-not-adjacent (not (adjacent? board (parse-piece-string "bN") (parse-piece-string "wN"))),
@@ -112,3 +114,19 @@
                 10 { :color :white :piece :K }
                 13 { :color :black :piece :N })]
     (reduce place-piece-randomly start unplaced-pieces)))
+
+(defn swap-single-location-contents [board]
+  (let [p-pos (rand-int 16)
+        q-pos (rand-int 16)
+        p (get board p-pos)
+        q (get board q-pos)]
+    (assoc board p-pos q q-pos p)))
+
+(defn swap-n-location-contents [board num-swaps]
+  (loop [board (vec board)
+         num-swaps num-swaps]
+    (if (zero? num-swaps)
+      (list* board)
+      (recur (swap-single-location-contents board)
+             (dec num-swaps)))))
+
