@@ -121,10 +121,10 @@
     (assoc board p-pos q q-pos p)))
 
 (defn swap-n-location-contents [board num-swaps]
-  (loop [b (vec board)
-         n num-swaps]
-    (if (zero? n)
-      (list* b)
-      (recur (swap-single-location-contents b)
-             (dec n)))))
+  (loop [board (vec board)
+         num-swaps num-swaps]
+    (if (zero? num-swaps)
+      (list* board)
+      (recur (swap-single-location-contents board)
+             (dec num-swaps)))))
 
