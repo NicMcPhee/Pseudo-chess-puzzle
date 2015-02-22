@@ -107,6 +107,9 @@
     :7.6-wP-share-diag-wR (share-diag? board (parse-piece-string "wP") (parse-piece-string "wR"))
     })
 
+(defn count-hits [error-vector]
+  (count (filter identity (vals error-vector))))
+
 (def placed-pieces
   [ { :color :black :piece :B }
     { :color :white :piece :K }
@@ -147,3 +150,24 @@
       (recur (swap-single-location-contents board)
              (dec num-swaps)))))
 
+(def best-board (atom (initial-genome)))
+(def num-iterations (atom 0))
+
+(defn hill-climb [board]
+  (swap! num-iterations inc)
+  (let [new-board (swap-n-location-contents board (inc (rand-int 3)))
+        old-error-vector (error-vector board)
+        old-hits (count-hits old-error-vector)
+        new-error-vector (error-vector new-board)
+        new-hits (count-hits new-error-vector)]
+    (if (>= new-hits old-hits)
+      (reset! best-board new-board)
+      board)))
+
+(defn search []
+  (loop [best-board @best-board]
+    (let [errors (error-vector best-board)
+          hits (count-hits errors)]
+      (if (= hits (count errors))
+        best-board
+        (recur (hill-climb best-board))))))
