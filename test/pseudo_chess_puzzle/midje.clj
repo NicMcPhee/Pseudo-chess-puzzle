@@ -21,7 +21,8 @@
       (lg/position-string-representation { :color :black :piece :B }) => "bB"
       (lg/position-string-representation { :color :white :piece :B }) => "wB"
       (lg/position-string-representation { :color :black :piece :K }) => "bK"
-      (lg/position-string-representation { :color :white :piece :R }) => "wR")
+      (lg/position-string-representation { :color :white :piece :R }) => "wR"
+      (lg/position-string-representation { :color :black :piece :Q }) => "bQ")
 
 (fact "`share-row?` returns `true` exactly when two pieces share a row"
       ; I'm going to cheat and do the tests with integer values instead of actual
