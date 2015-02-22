@@ -123,7 +123,7 @@
 (defn swap-n-location-contents [board num-swaps]
   (loop [b (vec board)
          n num-swaps]
-    (if (zero? num-swaps)
+    (if (zero? n)
       (list* b)
       (recur (swap-single-location-contents b)
              (dec n)))))
